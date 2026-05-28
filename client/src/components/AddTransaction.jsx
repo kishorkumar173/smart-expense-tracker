@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 function AddTransaction({
   refreshDashboard,
 }) {
+
+  const navigate =
+    useNavigate();
 
   const [formData,
     setFormData] =
@@ -30,23 +34,35 @@ function AddTransaction({
 
       try {
 
-        // Get logged in user token
+        // Get logged-in token
         const token =
           localStorage.getItem(
             "token"
           );
 
-        const config = {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-          },
-        };
+        console.log(
+          "TOKEN:",
+          token
+        );
+
+        if (!token) {
+          alert(
+            "Please login again"
+          );
+
+          navigate("/");
+          return;
+        }
 
         await API.post(
           "/transactions",
           formData,
-          config
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
         );
 
         alert(

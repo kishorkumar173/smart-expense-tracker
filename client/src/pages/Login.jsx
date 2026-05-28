@@ -1,33 +1,28 @@
 import { useState } from "react";
-import { useNavigate }
-from "react-router-dom";
-
-import API
-from "../services/api";
+import { useNavigate } from "react-router-dom";
+import API from "../services/api";
 
 function Login() {
 
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
-  const [formData,
-    setFormData] =
+  const [formData, setFormData] =
     useState({
       email: "",
       password: "",
     });
 
-  const handleChange =
-    (e) => {
-      setFormData({
-        ...formData,
-        [e.target.name]:
-          e.target.value,
-      });
-    };
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]:
+        e.target.value,
+    });
+  };
 
   const handleSubmit =
     async (e) => {
+
       e.preventDefault();
 
       try {
@@ -38,20 +33,22 @@ function Login() {
             formData
           );
 
-       localStorage.setItem(
-  "token",
-  res.data.token
-);
+        // Save token
+        localStorage.setItem(
+          "token",
+          res.data.token
+        );
 
-localStorage.setItem(
-  "user",
-  JSON.stringify(
-    res.data
-  )
-);
+        // Save logged-in user
+        localStorage.setItem(
+          "user",
+          JSON.stringify(
+            res.data.user
+          )
+        );
 
         alert(
-          "Login Success"
+          "Login Success 😎"
         );
 
         navigate(
@@ -59,7 +56,9 @@ localStorage.setItem(
         );
 
       } catch (error) {
+
         alert(
+          error.response?.data?.message ||
           "Invalid credentials"
         );
       }
@@ -69,9 +68,7 @@ localStorage.setItem(
     <div className="min-h-screen flex justify-center items-center bg-slate-100">
 
       <form
-        onSubmit={
-          handleSubmit
-        }
+        onSubmit={handleSubmit}
         className="bg-white p-8 rounded-3xl shadow-lg w-96"
       >
 
@@ -83,27 +80,26 @@ localStorage.setItem(
           type="email"
           name="email"
           placeholder="Email"
-          onChange={
-            handleChange
-          }
+          onChange={handleChange}
           className="border p-4 rounded-xl w-full mb-4"
+          required
         />
 
         <input
           type="password"
           name="password"
           placeholder="Password"
-          onChange={
-            handleChange
-          }
+          onChange={handleChange}
           className="border p-4 rounded-xl w-full mb-4"
+          required
         />
 
-        <button className="bg-blue-600 text-white p-4 rounded-xl w-full">
+        <button className="bg-blue-600 text-white p-4 rounded-xl w-full hover:bg-blue-700 transition">
           Login
         </button>
 
       </form>
+
     </div>
   );
 }

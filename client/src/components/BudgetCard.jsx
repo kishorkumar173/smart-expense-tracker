@@ -1,10 +1,13 @@
 function BudgetCard({
-  expense,
+  expense = 0,
   budget = 50000,
 }) {
 
   const percentage =
-    (expense / budget) * 100;
+    Math.min(
+      (expense / budget) * 100,
+      100
+    );
 
   return (
     <div className="bg-white rounded-3xl shadow-lg p-6">

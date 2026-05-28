@@ -33,6 +33,14 @@ function Dashboard() {
     setTransactions] =
     useState([]);
 
+  const [monthlyBudget,
+  setMonthlyBudget] =
+  useState(
+    localStorage.getItem(
+      "budget"
+    ) || 50000
+  );
+
   const [filter,
     setFilter] =
     useState("");
@@ -238,16 +246,46 @@ function Dashboard() {
 
         </div>
 
-        {/* Budget */}
-        <div className="mb-8">
+        {/* Set Budget */}
+<div className="bg-white p-5 rounded-3xl shadow-lg mb-6">
 
-          <BudgetCard
-            expense={
-              summary.totalExpense
-            }
-          />
+  <h2 className="text-2xl font-bold mb-3">
+    Set Monthly Budget
+  </h2>
 
-        </div>
+  <input
+    type="number"
+    placeholder="Enter Budget"
+    value={monthlyBudget}
+    onChange={(e) => {
+
+      setMonthlyBudget(
+        e.target.value
+      );
+
+      localStorage.setItem(
+        "budget",
+        e.target.value
+      );
+    }}
+    className="border p-4 rounded-xl w-full"
+  />
+
+</div>
+
+{/* Budget */}
+<div className="mb-8">
+
+  <BudgetCard
+    expense={
+      summary.totalExpense || 0
+    }
+    budget={
+      monthlyBudget
+    }
+  />
+
+</div>
 
         {/* Charts */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">

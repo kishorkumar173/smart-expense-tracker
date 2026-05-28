@@ -4,6 +4,7 @@ import API from "../services/api";
 function AddTransaction({
   refreshDashboard,
 }) {
+
   const [formData,
     setFormData] =
     useState({
@@ -13,27 +14,32 @@ function AddTransaction({
       description: "",
     });
 
-  const handleChange = (
-    e
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.value,
-    });
-  };
+  const handleChange =
+    (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]:
+          e.target.value,
+      });
+    };
 
   const handleSubmit =
     async (e) => {
+
       e.preventDefault();
 
       try {
+
+        // Get logged in user token
         const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTZiZDQzMmYxYzM5YmM2ZGQ3ODRmNyIsImlhdCI6MTc3OTg3NjE5NywiZXhwIjoxNzgwNDgwOTk3fQ.nDpP1FQVk2_jJWP8j88Lscx7SHmruzjNsa7XXCq7MEE";
+          localStorage.getItem(
+            "token"
+          );
 
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization:
+              `Bearer ${token}`,
           },
         };
 
@@ -44,9 +50,10 @@ function AddTransaction({
         );
 
         alert(
-          "Transaction Added"
+          "Transaction Added 😎"
         );
 
+        // Reset form
         setFormData({
           type: "expense",
           category: "",
@@ -54,10 +61,17 @@ function AddTransaction({
           description: "",
         });
 
+        // Refresh dashboard
         refreshDashboard();
 
       } catch (error) {
+
         console.log(error);
+
+        alert(
+          error.response?.data?.message ||
+          "Failed to add transaction"
+        );
       }
     };
 
@@ -105,6 +119,7 @@ function AddTransaction({
             handleChange
           }
           className="border p-4 rounded-xl"
+          required
         />
 
         <input
@@ -118,6 +133,7 @@ function AddTransaction({
             handleChange
           }
           className="border p-4 rounded-xl"
+          required
         />
 
         <input
@@ -131,6 +147,7 @@ function AddTransaction({
             handleChange
           }
           className="border p-4 rounded-xl"
+          required
         />
 
         <button className="bg-blue-600 text-white p-4 rounded-xl hover:bg-blue-700 transition">
@@ -138,6 +155,7 @@ function AddTransaction({
         </button>
 
       </form>
+
     </div>
   );
 }

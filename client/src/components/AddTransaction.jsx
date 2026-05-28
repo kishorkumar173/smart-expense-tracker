@@ -45,15 +45,9 @@ function AddTransaction({
         }
 
         await API.post(
-          "/transactions",
-          formData,
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
-            },
-          }
-        );
+  "/transactions",
+  formData
+);
 
         alert(
           "Transaction Added ✅"

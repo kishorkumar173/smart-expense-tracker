@@ -1,13 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 function AddTransaction({
   refreshDashboard,
 }) {
-
-  const navigate =
-    useNavigate();
 
   const [formData,
     setFormData] =
@@ -20,6 +16,7 @@ function AddTransaction({
 
   const handleChange =
     (e) => {
+
       setFormData({
         ...formData,
         [e.target.name]:
@@ -34,23 +31,16 @@ function AddTransaction({
 
       try {
 
-        // Get logged-in token
+        // Get token from localStorage
         const token =
           localStorage.getItem(
             "token"
           );
 
-        console.log(
-          "TOKEN:",
-          token
-        );
-
         if (!token) {
           alert(
             "Please login again"
           );
-
-          navigate("/");
           return;
         }
 
@@ -66,7 +56,7 @@ function AddTransaction({
         );
 
         alert(
-          "Transaction Added 😎"
+          "Transaction Added ✅"
         );
 
         // Reset form
@@ -77,12 +67,14 @@ function AddTransaction({
           description: "",
         });
 
-        // Refresh dashboard
+        // Refresh Dashboard
         refreshDashboard();
 
       } catch (error) {
 
-        console.log(error);
+        console.log(
+          error.response?.data
+        );
 
         alert(
           error.response?.data?.message ||
@@ -171,7 +163,6 @@ function AddTransaction({
         </button>
 
       </form>
-
     </div>
   );
 }

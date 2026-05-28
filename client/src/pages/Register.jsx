@@ -1,7 +1,56 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
+import API from "../services/api";
 
 function Register() {
+
+  const navigate =
+    useNavigate();
+
+  const [formData,
+    setFormData] =
+    useState({
+      name: "",
+      email: "",
+      password: "",
+    });
+
+  const handleChange =
+    (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]:
+          e.target.value,
+      });
+    };
+
+  const handleSubmit =
+    async (e) => {
+      e.preventDefault();
+
+      try {
+
+        await API.post(
+          "/auth/register",
+          formData
+        );
+
+        alert(
+          "Registration Successful 😎"
+        );
+
+        navigate("/");
+
+      } catch (error) {
+
+        alert(
+          error.response?.data?.message ||
+          "Registration Failed"
+        );
+      }
+    };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-600 via-emerald-700 to-teal-700 flex justify-center items-center px-4">
 
@@ -23,7 +72,12 @@ function Register() {
 
         </div>
 
-        <form className="space-y-5">
+        <form
+          onSubmit={
+            handleSubmit
+          }
+          className="space-y-5"
+        >
 
           <div>
             <label className="text-white text-sm">
@@ -32,7 +86,11 @@ function Register() {
 
             <input
               type="text"
+              name="name"
               placeholder="Enter your name"
+              onChange={
+                handleChange
+              }
               className="w-full mt-2 p-4 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none border border-white/20 focus:ring-2 focus:ring-green-400"
             />
           </div>
@@ -44,7 +102,11 @@ function Register() {
 
             <input
               type="email"
+              name="email"
               placeholder="Enter your email"
+              onChange={
+                handleChange
+              }
               className="w-full mt-2 p-4 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none border border-white/20 focus:ring-2 focus:ring-green-400"
             />
           </div>
@@ -56,7 +118,11 @@ function Register() {
 
             <input
               type="password"
+              name="password"
               placeholder="Enter your password"
+              onChange={
+                handleChange
+              }
               className="w-full mt-2 p-4 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none border border-white/20 focus:ring-2 focus:ring-green-400"
             />
           </div>
